@@ -32,15 +32,27 @@ python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
+## 🎥 Now in 3D — and in SECOND PERSON
+
+The demo renders a real-time 3D swamp (Three.js: moonlight, shadows, fog,
+fireflies, glowing mushrooms) and is presented in **second person**: you do
+not see through Gerald's eyes. You see through the eyes of whatever is
+currently trying to eat him. The camera *is* the nearest monster. When the
+monsters are all dead, you are demoted to crow. The industry said it
+couldn't be done. The industry said it *shouldn't* be done.
+
+Press `C` to switch to boring old first person.
+
 ## 🎮 Controls
 
 | Key | Action |
 |-----|--------|
-| `WASD` / arrows | Move |
+| `WASD` / arrows | Move (relative to YOUR eyes — and your eyes belong to a drowner) |
 | `SPACE` / click | Swing sword (aims at mouse) |
 | `Q` | **Igni** — cone of fire, solves most problems |
-| `E` | **Quen** — golden shield, absorbs one hit |
-| `R` | Summon Roach (results may vary, pathfinding sold separately) |
+| `E` | **Quen** — golden ward, absorbs one hit |
+| `R` | Summon Roach (results may vary, altitude not guaranteed) |
+| `C` | Toggle camera: 2nd person (you are the monster) ↔ 1st person |
 
 ## 🗺 Demo Contents
 

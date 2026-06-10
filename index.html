@@ -361,6 +361,84 @@
   #end-stats { line-height: 2.1; font-size: 17px; margin: 8px 0 6px; }
   #end-stats b { color: var(--gold-bright); font-family: 'Cinzel', serif; font-size: 15px; }
 
+  /* ---------- 3D HUD elements ---------- */
+  #banner {
+    position: absolute;
+    top: 64px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #d8b964;
+    letter-spacing: 3px;
+    text-shadow: 0 2px 5px #000;
+    opacity: 0;
+    transition: opacity .5s;
+    pointer-events: none;
+    z-index: 9;
+    white-space: nowrap;
+  }
+  #banner::before { content: '—— ◆  '; color: var(--blood); }
+  #banner::after { content: '  ◆ ——'; color: var(--blood); }
+  #boss-bar {
+    position: absolute;
+    bottom: 14px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    display: none;
+    text-align: center;
+    z-index: 9;
+    pointer-events: none;
+  }
+  #boss-bar.visible { display: block; }
+  .bb-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; color: #d8b964; letter-spacing: 4px; text-shadow: 0 1px 3px #000; }
+  .bb-track {
+    height: 14px;
+    background: rgba(5,4,3,.85);
+    border: 1px solid var(--gold-dim);
+    box-shadow: 0 0 0 2px rgba(0,0,0,.6);
+    margin: 3px 0 2px;
+  }
+  #bb-fill {
+    height: 100%; width: 100%;
+    background: linear-gradient(#c8454a, #8e1c20 55%, #5e1013);
+    box-shadow: 0 0 10px rgba(164,35,45,.5);
+    transition: width .2s;
+  }
+  .bb-quote { font-style: italic; font-size: 11px; color: #b3a17c; text-shadow: 0 1px 2px #000; }
+  #hurt-flash {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 8;
+    background: radial-gradient(ellipse at center, transparent 38%, rgba(164,35,45,.55));
+    opacity: 0;
+    transition: opacity .35s;
+  }
+  #cam-label {
+    position: absolute;
+    bottom: 12px; left: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #8d7d5c;
+    z-index: 9;
+    display: none;
+    text-shadow: 0 1px 2px #000;
+    pointer-events: none;
+  }
+  #cam-label.visible { display: block; }
+  .floater {
+    position: absolute;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 9;
+    text-shadow: 0 1px 3px #000;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+
   /* ==================== GWENT ==================== */
   #gwent {
     position: absolute; inset: 0; z-index: 15;
@@ -518,6 +596,14 @@
 <div id="stage">
   <canvas id="game" width="960" height="540"></canvas>
   <div id="vignette"></div>
+  <div id="hurt-flash"></div>
+  <div id="banner"></div>
+  <div id="cam-label"></div>
+  <div id="boss-bar">
+    <div class="bb-name">THE TAX COLLECTOR</div>
+    <div class="bb-track"><div id="bb-fill"></div></div>
+    <div class="bb-quote">"Everything is deductible. Especially your health."</div>
+  </div>
 
   <div id="hud">
     <div id="hud-left">
@@ -578,7 +664,8 @@
     <button class="btn" id="gwent-btn" style="font-size:15px">SKIP STRAIGHT TO GWENT — WE UNDERSTAND</button>
     <div class="keys">
       <kbd>WASD</kbd> move &nbsp;·&nbsp; <kbd>SPACE</kbd> / <kbd>CLICK</kbd> swing sword &nbsp;·&nbsp;
-      <kbd>Q</kbd> Igni &nbsp;·&nbsp; <kbd>E</kbd> Quen &nbsp;·&nbsp; <kbd>R</kbd> summon Roach (results may vary)
+      <kbd>Q</kbd> Igni &nbsp;·&nbsp; <kbd>E</kbd> Quen &nbsp;·&nbsp; <kbd>R</kbd> summon Roach &nbsp;·&nbsp; <kbd>C</kbd> camera<br>
+      <span style="color:#a4232d">◆</span> <i>Rendered in 3D and presented in <b>SECOND PERSON</b> — you watch the witcher through the monsters' eyes. The industry said it couldn't be done. The industry said it shouldn't be done.</i>
     </div>
     <div class="fine-print">
       Demo contains: cartoon violence against fictional swamp residents, one (1) economically menacing boss,
@@ -601,6 +688,7 @@
     </div>
   </div>
 </div>
+<script src="three.min.js"></script>
 <script src="game.js"></script>
 <script src="gwent.js"></script>
 </body>
