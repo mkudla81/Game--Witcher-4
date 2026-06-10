@@ -905,11 +905,40 @@ function startTavern() {
         ]},
       ],
     },
+    { speaker: 'The Bard', portrait: '🪕', text: 'HOLD! Before anything tasteful and off-screen occurs — I challenge you, witcher, to a game of GWENT! The cards! The glory! The crippling addiction the whole Continent pretends is fine!' },
+    {
+      speaker: 'The Bard', portrait: '🪕', text: 'Ten coins says I shuffle you into the dirt. Well? Or are you SCARED of a man with a lute?',
+      choices: [
+        { label: '🃏 "Deal the cards, music boy. I\'ve slain things scarier than your rhyme schemes."', charm: 1, effect: () => { S.playGwent = true; } },
+        { label: '🚪 "Hard pass. Last time I played Gwent I lost my horse, my boots, and a castle I didn\'t own."', charm: 0, effect: () => { S.playGwent = false; }, respond: [
+          { speaker: 'The Bard', portrait: '🪕', text: 'COWARD! …Fair, though. That tournament in Novigrad got completely out of hand.' },
+        ]},
+      ],
+    },
+  ], () => {
+    if (S.playGwent) {
+      gwStart({ wager: true }, (result) => tavernAfterGwent(result));
+    } else {
+      tavernAfterGwent(null);
+    }
+  });
+}
+
+function tavernAfterGwent(result) {
+  const gwentLine = {
+    win: { speaker: 'Narrator', portrait: '🃏', text: 'You take the bard for 15 coins. He immediately begins composing "The Ballad of the Card Shark Witcher," which is somehow about him being brave.' },
+    lose: { speaker: 'Narrator', portrait: '🃏', text: 'The bard wins and will be insufferable about it for the rest of recorded history. The sorceresses pretend not to know you.' },
+    draw: { speaker: 'Narrator', portrait: '🃏', text: 'A draw at Gwent. The most erotic possible outcome, according to the bard, who is asked to leave.' },
+  }[result];
+  const script = [];
+  if (gwentLine) script.push(gwentLine);
+  script.push(
     { speaker: 'Narrator', portrait: '🌙', text: 'What follows is tasteful, candle-lit, and entirely off-screen. The camera pans to the fireplace. The lute music gets… suggestive. A unicorn figurine on the mantel tips over by itself.' },
     { speaker: 'Narrator', portrait: '🌅', text: 'LATER. Gerald stands, refreshed, hair magnificent, smelling 40% less like swamp. But the night is not over — a cold wind slams the tavern door open…' },
     { speaker: '???', portrait: '🕴️', text: '"GERALD OF RIVIERA. Slayer of twelve monsters this evening. By decree of the Novigrad Revenue Service… you have UNDECLARED INCOME."' },
     { speaker: 'Gerald', portrait: '🧔🏻‍♂️', text: 'I\'ve fought striga, leshens, and the king of the Wild Hunt. But this… this is the one that scares me. Damn.' },
-  ], () => startBossFight());
+  );
+  showDialogue(script, () => startBossFight());
 }
 
 function startBossFight() {
@@ -962,7 +991,7 @@ $('restart-btn').onclick = () => {
   sfx.ui();
   $('end-screen').classList.remove('visible');
   S.coins = 0; S.kills = 0; S.charm = 0; S.romanced = null;
-  S.bossDefeated = false; S.bossPhase = false;
+  S.bossDefeated = false; S.bossPhase = false; S.playGwent = false;
   player.hp = player.maxHp; player.dead = false;
   enemies = []; particles = []; floaters = []; projectiles = []; pickups = [];
   startIntro();

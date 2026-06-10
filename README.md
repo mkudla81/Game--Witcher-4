@@ -9,7 +9,12 @@ swamp full of moist personalities, flirts his way through a candle-lit
 tavern, and faces the most terrifying boss on the Continent: **The Tax
 Collector of Novigrad**.
 
-## ▶ How to Play
+## ▶ Play Online
+
+**https://mkudla81.github.io/Game--Witcher-4/** — deployed automatically
+to GitHub Pages on every push.
+
+## ▶ How to Play Locally
 
 No build, no install, no DRM launcher with three mandatory accounts.
 Just open the file:
@@ -40,6 +45,7 @@ python3 -m http.server 8000
 ## 🗺 Demo Contents
 
 - **3 waves of monsters** — drowners, nekkers, and ghouls who are going through something
+- **GWENT: Homebrew Rules Edition** — best-of-3 card battles against The Bard (Legally Not Dandelion), with hero cards, treacherous spies, and a 10-coin wager. Cards don't replenish between rounds; yes, that is the game; yes, it hurts. Also playable straight from the title screen, because we know why you're really here
 - **A tavern romance scene** with two sorceresses, one unflappable bartender, and one (1) extremely eligible bathtub — saucy but tasteful, fade-to-black guaranteed
 - **A boss fight** against weaponized bureaucracy (weakness: receipts)
 - **A charm rating system** ranging from *Emotionally Constipated (canon)* to *Certified Swamp Casanova*

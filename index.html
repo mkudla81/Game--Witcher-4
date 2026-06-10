@@ -148,6 +148,76 @@
     background: #241c12; border: 1px solid #6e5f44; border-radius: 3px;
     padding: 1px 7px; font-family: inherit; color: var(--gold);
   }
+
+  /* ---------- GWENT ---------- */
+  #gwent {
+    position: absolute; inset: 0; z-index: 15;
+    display: none; flex-direction: column;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(90,60,30,.25), transparent 60%),
+      linear-gradient(#241a10, #14100a);
+    padding: 8px 14px;
+  }
+  #gwent.visible { display: flex; }
+  .gw-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 14px; padding: 2px 6px 6px;
+  }
+  .gw-name { color: var(--gold); letter-spacing: 1px; }
+  .gw-crowns { font-size: 17px; }
+  .gw-total {
+    display: inline-block; min-width: 36px; text-align: center;
+    background: #000a; border: 1px solid var(--gold); color: var(--gold);
+    padding: 2px 8px; font-size: 17px; margin-left: 10px;
+  }
+  .gw-board {
+    flex: 1; display: flex; gap: 5px; align-items: center;
+    border: 1px solid #4a3a22; background: rgba(0,0,0,.3);
+    padding: 5px 8px; min-height: 96px; overflow: hidden;
+  }
+  .gw-mid {
+    text-align: center; font-size: 12px; font-style: italic; color: #9a8a66;
+    padding: 5px 0; letter-spacing: 1px;
+  }
+  .gw-card {
+    width: 66px; height: 86px; flex: 0 0 auto;
+    background: linear-gradient(#efe2c0, #d9c89e);
+    color: #2a2014; border: 1px solid #8a6d1f; border-radius: 6px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 9.5px; text-align: center; line-height: 1.2;
+    position: relative; padding: 14px 3px 3px; cursor: default;
+    box-shadow: 1px 2px 4px rgba(0,0,0,.5);
+  }
+  .gw-card .pw {
+    position: absolute; top: 2px; left: 2px;
+    width: 17px; height: 17px; line-height: 17px; border-radius: 50%;
+    background: #2a2014; color: var(--gold); font-size: 11px; font-weight: bold;
+  }
+  .gw-card .em { font-size: 21px; }
+  .gw-card.spy { border-color: #7a3a9a; background: linear-gradient(#e2d0ef, #c8aede); }
+  .gw-card.spy .pw { background: #4a2060; }
+  .gw-card.hero { border-color: #b8860b; box-shadow: 0 0 8px rgba(212,175,55,.55); }
+  #gw-hand-row { display: flex; gap: 6px; align-items: flex-end; padding: 6px 4px 2px; min-height: 100px; }
+  #gw-hand-row .gw-card { cursor: pointer; transition: transform .12s, box-shadow .12s; }
+  #gw-hand-row .gw-card:hover { transform: translateY(-8px); box-shadow: 0 8px 14px rgba(0,0,0,.6); }
+  #gw-hand-row .gw-card.disabled { filter: grayscale(.6) brightness(.7); cursor: not-allowed; }
+  #gw-foot { display: flex; justify-content: space-between; align-items: center; padding: 2px 6px; }
+  #gw-pass {
+    font-family: inherit; font-size: 15px; letter-spacing: 2px;
+    padding: 8px 26px; background: linear-gradient(#3a2e1e, #241c12);
+    color: var(--parchment); border: 1px solid var(--gold); cursor: pointer;
+  }
+  #gw-pass:hover:not(:disabled) { background: linear-gradient(#5a4426, #34281a); color: #fff; }
+  #gw-pass:disabled { opacity: .35; cursor: not-allowed; }
+  #gw-status { font-size: 13px; font-style: italic; color: #b9a47a; }
+  #gw-modal {
+    position: absolute; inset: 0; z-index: 16;
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(8,6,4,.86); text-align: center; padding: 30px;
+  }
+  #gw-modal.visible { display: flex; }
+  #gw-modal h2 { color: var(--gold); font-size: 30px; letter-spacing: 3px; margin-bottom: 10px; }
+  #gw-modal p { max-width: 600px; line-height: 1.6; margin-bottom: 16px; font-size: 16px; }
 </style>
 </head>
 <body>
@@ -165,6 +235,31 @@
     <div id="coins">🪙 0</div>
   </div>
 
+  <div id="gwent">
+    <div class="gw-head">
+      <span><span class="gw-name" id="gw-ai-name">THE BARD (LEGALLY NOT DANDELION)</span>
+        &nbsp; 🃏 <span id="gw-ai-cards">10</span> &nbsp; <span class="gw-crowns" id="gw-ai-crowns"></span></span>
+      <span>THEIR SIDE <span class="gw-total" id="gw-ai-total">0</span></span>
+    </div>
+    <div class="gw-board" id="gw-ai-board"></div>
+    <div class="gw-mid" id="gw-mid">ROUND 1 — closest thing the Continent has to therapy</div>
+    <div class="gw-board" id="gw-p-board"></div>
+    <div class="gw-head">
+      <span><span class="gw-name">GERALD OF RIVIERA</span> &nbsp; <span class="gw-crowns" id="gw-p-crowns"></span></span>
+      <span>YOUR SIDE <span class="gw-total" id="gw-p-total">0</span></span>
+    </div>
+    <div id="gw-hand-row"></div>
+    <div id="gw-foot">
+      <span id="gw-status">Your move. Click a card to play it.</span>
+      <button id="gw-pass">PASS ROUND</button>
+    </div>
+    <div id="gw-modal">
+      <h2 id="gw-modal-title"></h2>
+      <p id="gw-modal-text"></p>
+      <button class="btn" id="gw-modal-btn">CONTINUE</button>
+    </div>
+  </div>
+
   <div id="toast"></div>
   <div id="portrait"></div>
 
@@ -178,6 +273,7 @@
     <h1>THE WATCHER 4</h1>
     <div class="subtitle">Wild Hunt? More like Mild Flirt.™ &nbsp;—&nbsp; A Totally Legally Distinct Parody Demo</div>
     <button class="btn" id="start-btn">⚔ &nbsp;BEGIN THE PATH&nbsp; ⚔</button>
+    <button class="btn" id="gwent-btn" style="font-size:15px">🃏 &nbsp;SKIP STRAIGHT TO GWENT (we understand)&nbsp; 🃏</button>
     <div class="keys">
       <kbd>WASD</kbd> move &nbsp;·&nbsp; <kbd>SPACE</kbd> / <kbd>CLICK</kbd> swing sword &nbsp;·&nbsp;
       <kbd>Q</kbd> Igni (fire) &nbsp;·&nbsp; <kbd>E</kbd> Quen (shield) &nbsp;·&nbsp; <kbd>R</kbd> summon Roach (results may vary)
@@ -194,6 +290,7 @@
     <div class="subtitle" id="end-subtitle"></div>
     <div id="end-stats" style="line-height:2;font-size:17px;margin:10px 0 4px"></div>
     <button class="btn" id="restart-btn">⚔ &nbsp;WALK THE PATH AGAIN&nbsp; ⚔</button>
+    <button class="btn" id="gwent-again-btn" style="font-size:15px">🃏 &nbsp;ONE MORE ROUND OF GWENT&nbsp; 🃏</button>
     <div class="fine-print">
       The full game features 14 more endings, 3 additional bathtubs, a card game nobody can stop playing,
       and a 40-hour side quest about a frying pan. Probably.
@@ -201,5 +298,6 @@
   </div>
 </div>
 <script src="game.js"></script>
+<script src="gwent.js"></script>
 </body>
 </html>
